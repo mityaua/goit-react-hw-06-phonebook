@@ -7,7 +7,6 @@ import ContactList from './components/ContactList';
 // Нужно перенести:
 // - проверка на дубликат
 // - подтверждение удаления
-// - локальное хранилище
 
 const App = () => {
   return (

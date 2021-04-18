@@ -1,23 +1,16 @@
-import types from './contacts-types';
+import { createAction } from '@reduxjs/toolkit';
 
-const addContact = data => ({
-  type: types.ADD,
+const addContact = createAction('contacts/add', data => ({
   payload: {
     id: Date.now().toString(),
     name: data.name.toLowerCase(),
     number: data.number,
   },
-});
+}));
 
-const deleteContact = contactId => ({
-  type: types.DELETE,
-  payload: contactId,
-});
+const deleteContact = createAction('contacts/delete');
 
-const changeFilter = value => ({
-  type: types.CHANGE_FILTER,
-  payload: value,
-});
+const changeFilter = createAction('contacts/change-filter');
 
 // eslint-disable-next-line
 export default { addContact, deleteContact, changeFilter };

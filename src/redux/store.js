@@ -1,12 +1,43 @@
-import { createStore, combineReducers } from 'redux'; // Берём функцию создания хранилища из redux
-import { composeWithDevTools } from 'redux-devtools-extension'; // Композиция редюсеров
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+import logger from 'redux-logger';
 import contactsReducer from './contacts/contacts-reducer';
 
-// Корневой редюсер
-const rootReducer = combineReducers({
-  contacts: contactsReducer,
+const contactsPersistConfig = {
+  key: 'contacts',
+  storage,
+  blacklist: ['filter'],
+};
+
+// Создание прослойки для логгера. Важен порядок!
+const middleware = [
+  ...getDefaultMiddleware({
+    serializableCheck: {
+      ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+    },
+  }),
+  logger,
+];
+
+const store = configureStore({
+  reducer: {
+    contacts: persistReducer(contactsPersistConfig, contactsReducer),
+  },
+  middleware,
+  devTools: process.env.NODE_ENV === 'development',
 });
 
-const store = createStore(rootReducer, composeWithDevTools()); // Создает хранилище (может содержать три параметра)
+const persistor = persistStore(store);
 
-export default store;
+// eslint-disable-next-line
+export default { store, persistor };

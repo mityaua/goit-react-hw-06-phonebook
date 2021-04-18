@@ -6,11 +6,6 @@ import PropTypes from 'prop-types';
 import styles from './ContactForm.module.scss';
 
 class ContactForm extends Component {
-  // PropTypes как статическое свойство
-  static propTypes = {
-    onSubmit: PropTypes.func.isRequired,
-  };
-
   // Стейт формы
   state = {
     name: '',
@@ -30,6 +25,16 @@ class ContactForm extends Component {
   hanldeSubmit = event => {
     event.preventDefault();
 
+    //     // Проверка на дубликат
+    //     const duplicateName = this.state.contacts.find(
+    //       contact => contact.name === newContact.name,
+    //     );
+
+    //     if (duplicateName) {
+    //       alert(`${newContact.name} is already on contacts`);
+    //       return;
+    //     }
+
     this.props.onSubmit(this.state); // Внешний метод в пропсах класса
 
     this.resetForm();
@@ -38,7 +43,6 @@ class ContactForm extends Component {
   // Сброс полей формы (после отправки)
   resetForm = () => {
     this.setState({
-      id: '',
       name: '',
       number: '',
     });
@@ -87,6 +91,10 @@ class ContactForm extends Component {
     );
   }
 }
+
+ContactForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+};
 
 const mapDispatchToProps = dispatch => ({
   onSubmit: data => dispatch(contactsActions.addContact(data)),

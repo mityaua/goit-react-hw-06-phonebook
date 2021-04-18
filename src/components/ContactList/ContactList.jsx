@@ -21,15 +21,6 @@ const ContactList = ({ contacts, onDeleteContact }) => {
   );
 };
 
-// // Фильтрует и возвращает результат фильтра
-const getfilteredContacts = (allContacts, filter) => {
-  const normalizedFilter = filter.toLowerCase();
-
-  return allContacts.filter(({ name }) =>
-    name.toLowerCase().includes(normalizedFilter),
-  );
-};
-
 ContactList.propTypes = {
   contacts: PropTypes.arrayOf(
     PropTypes.shape({
@@ -39,6 +30,15 @@ ContactList.propTypes = {
     }),
   ),
   onDeleteContact: PropTypes.func.isRequired,
+};
+
+// // Фильтрует и возвращает результат фильтра
+const getfilteredContacts = (allContacts, filter) => {
+  const normalizedFilter = filter.toLowerCase();
+
+  return allContacts.filter(({ name }) =>
+    name.toLowerCase().includes(normalizedFilter),
+  );
 };
 
 // Из стейта в пропы + в контакты пишет результат функции фильтра
@@ -52,3 +52,14 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContactList);
+
+//   // Удаляет контакт
+//   deleteContact = id => {
+//     const answer = window.confirm('Want to delete?');
+
+//     if (answer) {
+//       this.setState(prevState => ({
+//         contacts: prevState.contacts.filter(contact => contact.id !== id),
+//       }));
+//     }
+//   };
