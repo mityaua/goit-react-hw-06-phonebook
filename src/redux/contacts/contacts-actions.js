@@ -1,10 +1,10 @@
 import { createAction } from '@reduxjs/toolkit';
 
-const addContact = createAction('contacts/add', data => ({
+const addContact = createAction('contacts/add', (name, number) => ({
   payload: {
     id: Date.now().toString(),
-    name: data.name.toLowerCase(),
-    number: data.number,
+    name,
+    number,
   },
 }));
 

@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { ToastContainer, toast } from 'react-toastify';
+
 import { connect } from 'react-redux';
 import contactsActions from '../../redux/contacts/contacts-actions';
-import PropTypes from 'prop-types';
 
 import styles from './ContactForm.module.scss';
+import 'react-toastify/dist/ReactToastify.css';
 
 class ContactForm extends Component {
   // Стейт формы
@@ -24,18 +27,22 @@ class ContactForm extends Component {
   // Метод на отправке формы. Формирует из стейта контакт и передает во внешний метод
   hanldeSubmit = event => {
     event.preventDefault();
+    const { name, number } = this.state;
+    const normalizedName = name.toLowerCase();
 
-    //     // Проверка на дубликат
-    //     const duplicateName = this.state.contacts.find(
-    //       contact => contact.name === newContact.name,
-    //     );
+    // Проверка на дубликат
+    const inContacts = this.props.contacts.find(
+      contact => contact.name === normalizedName,
+    );
 
-    //     if (duplicateName) {
-    //       alert(`${newContact.name} is already on contacts`);
-    //       return;
-    //     }
+    if (inContacts) {
+      toast.info(`${name} is already in contacts`, {
+        autoClose: 2500,
+      });
+      return;
+    }
 
-    this.props.onSubmit(this.state); // Внешний метод в пропсах класса
+    this.props.onSubmit(normalizedName, number); // Внешний метод в пропса
 
     this.resetForm();
   };
@@ -86,6 +93,7 @@ class ContactForm extends Component {
           <button type="submit" className={styles.button}>
             Add contact
           </button>
+          <ToastContainer />
         </div>
       </form>
     );
@@ -96,8 +104,13 @@ ContactForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
 };
 
-const mapDispatchToProps = dispatch => ({
-  onSubmit: data => dispatch(contactsActions.addContact(data)),
+const mapStateToProps = state => ({
+  contacts: state.contacts.items,
 });
 
-export default connect(null, mapDispatchToProps)(ContactForm);
+const mapDispatchToProps = dispatch => ({
+  onSubmit: (name, number) =>
+    dispatch(contactsActions.addContact(name, number)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContactForm);

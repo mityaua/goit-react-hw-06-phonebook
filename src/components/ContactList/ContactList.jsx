@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+
 import { connect } from 'react-redux'; // Импортируем коннект для глобального хранилища
 import contactsActions from '../../redux/contacts/contacts-actions'; // Импортируем экшны для диспатчинга
 
@@ -52,14 +53,3 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContactList);
-
-//   // Удаляет контакт
-//   deleteContact = id => {
-//     const answer = window.confirm('Want to delete?');
-
-//     if (answer) {
-//       this.setState(prevState => ({
-//         contacts: prevState.contacts.filter(contact => contact.id !== id),
-//       }));
-//     }
-//   };
