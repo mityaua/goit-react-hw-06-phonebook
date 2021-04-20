@@ -1,9 +1,10 @@
 import { createAction } from '@reduxjs/toolkit'; // Импорт функции создания экшена
+import { nanoid } from 'nanoid';
 
 // Создание экшена для добавления контакта: type + payload + Prepare Callback
 const addContact = createAction('contacts/add', (name, number) => ({
   payload: {
-    id: Date.now().toString(),
+    id: nanoid(),
     name,
     number,
   },
